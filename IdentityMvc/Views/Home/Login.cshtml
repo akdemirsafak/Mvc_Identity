@@ -1,0 +1,29 @@
+﻿@model LoginViewModel
+
+@{
+    ViewBag.Title = "Giriş Yap";
+    Layout = "_Layout";
+}
+
+<h2 class="mb-5">Giriş Yap</h2>
+
+
+<form method="post" asp-controller="Home" asp-action="Login">
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" type="email" class="form-control">
+        <span asp-validation-for="Email" class="form-text"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Password" class="form-label"></label>
+        <input asp-for="Password" type="password" class="form-control">
+        <span asp-validation-for="Password" class="form-text"></span>
+    </div>
+    <div class="mb-3 form-check">
+            <label asp-for="RememberMe" class="form-check-label me-2"></label>
+            <input asp-for="RememberMe" type="checkbox" class="form-control form-check-input me-2 py-2">
+            <span asp-validation-for="Email" class="form-text"></span>
+        </div>
+
+    <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+</form>
