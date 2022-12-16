@@ -1,17 +1,21 @@
-﻿using IdentityMvc.Models;
+﻿using IdentityMvc.Extensions;
+using IdentityMvc.Models;
 using IdentityMvc.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace IdentityMvc.Controllers;
 
 public class HomeController : Controller
 {
     private readonly UserManager<AppUser> _userManager;
+    private readonly SignInManager<AppUser> _signInManager;
 
-    public HomeController(UserManager<AppUser> userManager)
+    public HomeController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
     {
         _userManager = userManager;
+        _signInManager = signInManager;
     }
 
     public IActionResult Index()
@@ -42,8 +46,7 @@ public class HomeController : Controller
             TempData["SuccessMessage"] = "Üyelik işlemi başarıyla tamamlandı.";
             return RedirectToAction(nameof(SignUp));
         }
-
-        foreach (var errors in identityResult.Errors) ModelState.AddModelError(string.Empty, errors.Description);
+        ModelState.AddModelErrorList(identityResult.Errors.Select(x=>x.Description).ToList()); 
         return View();
     }
 
@@ -53,8 +56,33 @@ public class HomeController : Controller
         return View();
     }
     [HttpPost]
-    public IActionResult Login(LoginViewModel model)
+    public async Task<IActionResult> Login(LoginViewModel model,string returnUrl=null)
     {
+        returnUrl=returnUrl ?? Url.Action("Index", "Home");
+        //var result = _signInManager.PasswordSignInAsync(model.UserName, model.Password, model); //Eğer username ila giriş yaptırıyorsak
+        var hasUser=await _userManager.FindByEmailAsync(model.Email);
+        if (hasUser == null)
+        {
+            ModelState.AddModelError(
+                string.Empty,"Email veya şifre yanlış.");
+            return View();
+        }
+
+        var loginResult = await _signInManager.PasswordSignInAsync(hasUser, model.Password, model.RememberMe,true); 
+        //buradaki false kullanıcı bilgilerinin uzun vadede cookie'de tutulması durumudur.
+        //Kullanıcı n tane yanlış şifre girişi yaptığında hesabı kitlensin veya kitlenmesin.Default olarak 5 dir.
+       
+        if (loginResult.Succeeded) return Redirect(returnUrl);
+        if (loginResult.IsLockedOut)
+        {
+           
+            ModelState.AddModelErrorList(new List<string>() { $"Hesabınız 3 dakikalığına kitlendi." });
+            return View();
+        }
+
+        var lockoutCount = await _userManager.GetAccessFailedCountAsync(hasUser);
+        ModelState.AddModelErrorList(new List<string>() { $"Yanlış giriş sayısı : {lockoutCount}" });
+        ModelState.AddModelErrorList(new List<string>() { "Email veya şifre yanlış." });
         return View();
     }
     
