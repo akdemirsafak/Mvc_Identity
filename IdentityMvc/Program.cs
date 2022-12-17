@@ -13,30 +13,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddIdentityWithExtention();
-//   ------------- BU KISMI STARTUP EXTENSIONS' a taşıdık. --------
+builder.Services.ConfigureApplicationCookie(opt=>{
+ 
+    var cookieBuilder=new CookieBuilder();
+    cookieBuilder.Name="IdentityServerLogin";
+    opt.LoginPath = new PathString("/Home/Login");
+    opt.Cookie = cookieBuilder;
+    opt.ExpireTimeSpan=TimeSpan.FromDays(60);
+    opt.SlidingExpiration = true; //kullanıcı her giriş yaptığında cookie süresini 60 gün uzatır.
 
-// builder.Services.AddIdentity<AppUser, AppRole>(
-//     
-//     options =>
-//     {
-//    
-//         //Default ayarları değiştirmek istersek bu kısımda ayarlamalar yapabiliriz.
-//         options.User.RequireUniqueEmail = true; // UserName default olarak unique !
-//         options.User.AllowedUserNameCharacters = "qwertyuopasdfghjklizxcvbnm1234567890_"; //sadece küçük harfler, sayılar ve _
-//         
-//         //Parola ile ilgili düzenlemeler.
-//         options.Password.RequiredLength = 6;
-//         options.Password.RequireNonAlphanumeric = false; //özel karakter zorunluluğunu kaldırdık
-//         options.Password.RequireLowercase = true;
-//         options.Password.RequireUppercase = false;
-//         options.Password.RequireDigit = false;
-//     }
-//     
-// ).AddEntityFrameworkStores<AppDbContext>();
-
-///////////----Identity End//////////////
-
-
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
