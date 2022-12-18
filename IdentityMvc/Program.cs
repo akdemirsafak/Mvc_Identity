@@ -18,6 +18,7 @@ builder.Services.ConfigureApplicationCookie(opt=>{
     var cookieBuilder=new CookieBuilder();
     cookieBuilder.Name="IdentityServerLogin";
     opt.LoginPath = new PathString("/Home/Login");
+    opt.LogoutPath=new PathString("/Member/Logout"); //Efektif olarak isimlendiriğimiz Logout için yazdık. 
     opt.Cookie = cookieBuilder;
     opt.ExpireTimeSpan=TimeSpan.FromDays(60);
     opt.SlidingExpiration = true; //kullanıcı her giriş yaptığında cookie süresini 60 gün uzatır.

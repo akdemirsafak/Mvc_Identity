@@ -27,11 +27,15 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home">Privacy</a>
                     </li>
                 </ul>
+                <!---Partial view eğer shared kısmında tutuluyorsa name yazmamız yeterlidir eğer farklı klasördeyse yolu belirtilmelidir.-->
+                <partial name="_NavbarLogin" />
+                
+                <!-- Partial Views 2 yöntemle injection edilir
+                1. Html.Partial : Bad Practise'dir.
+                2. Bu işleme özel partial tag helper kullanmaktır. Best Practise!!!!-->
+                             
             </div>
-            <div>
-                <a class="btn btn-outline-success me-2" asp-area="" asp-controller="Home" asp-action="SignUp">Kayıt Ol</a>
-                <a class="btn btn-outline-success" asp-area="" asp-controller="Home" asp-action="Login">Giriş Yap</a>
-            </div>              
+                    
         </div>
     </nav>
 </header>
