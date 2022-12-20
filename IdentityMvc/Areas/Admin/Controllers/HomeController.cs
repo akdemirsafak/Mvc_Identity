@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace IdentityMvc.Areas.Admin.Controllers;
 
 [Area("Admin")]
-public class HomeController:Controller
+public class HomeController : Controller
 {
     private readonly UserManager<AppUser> _userManager;
 
@@ -15,7 +15,7 @@ public class HomeController:Controller
     {
         _userManager = userManager;
     }
-    
+
     public async Task<IActionResult> UserList()
     {
         var users = await _userManager.Users.ToListAsync();

@@ -13,16 +13,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddIdentityWithExtention();
-builder.Services.ConfigureApplicationCookie(opt=>{
- 
-    var cookieBuilder=new CookieBuilder();
-    cookieBuilder.Name="IdentityServerLogin";
+builder.Services.ConfigureApplicationCookie(opt =>
+{
+    var cookieBuilder = new CookieBuilder();
+    cookieBuilder.Name = "IdentityServerLogin";
     opt.LoginPath = new PathString("/Home/Login");
-    opt.LogoutPath=new PathString("/Member/Logout"); //Efektif olarak isimlendiriğimiz Logout için yazdık. 
+    opt.LogoutPath = new PathString("/Member/Logout"); //Efektif olarak isimlendiriğimiz Logout için yazdık. 
     opt.Cookie = cookieBuilder;
-    opt.ExpireTimeSpan=TimeSpan.FromDays(60);
+    opt.ExpireTimeSpan = TimeSpan.FromDays(60);
     opt.SlidingExpiration = true; //kullanıcı her giriş yaptığında cookie süresini 60 gün uzatır.
-
 });
 var app = builder.Build();
 
@@ -39,7 +38,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
+app.UseAuthentication(); //Authentication için. kimliği doğrular
+app.UseAuthorization(); //yetkilendirme
+//Buradaki sıralama önemli önce kimlik doğrulanmalı sonra yetki.
 
 //// NEW AREA ADDED
 // app.UseEndpoints(endpoints =>
@@ -52,8 +53,8 @@ app.UseAuthorization();
 
 //üstteki .net6 dan önce kullanılan area route'u güncel hali aşağıdaki gibi.
 app.MapControllerRoute(
-        name : "areas",
-        pattern : "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+    "areas",
+    "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 ///// NEW AREA ADDED END
 app.MapControllerRoute(

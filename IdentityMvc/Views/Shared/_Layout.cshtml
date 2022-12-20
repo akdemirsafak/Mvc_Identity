@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/IdentityMvc.styles.css" asp-append-version="true"/>
-    @RenderSection("Css", required: false)
+    @RenderSection("Css", false)
 </head>
 <body>
 <header>
@@ -28,14 +28,14 @@
                     </li>
                 </ul>
                 <!---Partial view eğer shared kısmında tutuluyorsa name yazmamız yeterlidir eğer farklı klasördeyse yolu belirtilmelidir.-->
-                <partial name="_NavbarLogin" />
-                
+                <partial name="_NavbarLogin"/>
+
                 <!-- Partial Views 2 yöntemle injection edilir
                 1. Html.Partial : Bad Practise'dir.
                 2. Bu işleme özel partial tag helper kullanmaktır. Best Practise!!!!-->
-                             
+
             </div>
-                    
+
         </div>
     </nav>
 </header>

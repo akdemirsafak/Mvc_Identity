@@ -8,13 +8,13 @@ public static class StartupExtensions
 {
     public static void AddIdentityWithExtention(this IServiceCollection serviceCollection)
     {
-        
         serviceCollection.AddIdentity<AppUser, AppRole>(
-            options =>
+                options =>
                 {
                     //Default ayarları değiştirmek istersek bu kısımda ayarlamalar yapabiliriz.
                     options.User.RequireUniqueEmail = true; // UserName default olarak unique !
-                    options.User.AllowedUserNameCharacters = "qwertyuopasdfghjklizxcvbnm1234567890_"; //sadece küçük harfler, sayılar ve _
+                    options.User.AllowedUserNameCharacters =
+                        "qwertyuopasdfghjklizxcvbnm1234567890_"; //sadece küçük harfler, sayılar ve _
 
                     //Parola ile ilgili düzenlemeler.
                     options.Password.RequiredLength = 6;
@@ -22,12 +22,12 @@ public static class StartupExtensions
                     options.Password.RequireLowercase = true;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireDigit = false;
-                    options.Lockout.DefaultLockoutTimeSpan=TimeSpan.FromMinutes(3); //Default olarak 5 dakika kitleniyormuş.
+                    options.Lockout.DefaultLockoutTimeSpan =
+                        TimeSpan.FromMinutes(3); //Default olarak 5 dakika kitleniyormuş.
                     options.Lockout.MaxFailedAccessAttempts = 3; //Default 5 yanlış girişi 3 e düşürdük.
                 }).AddUserValidator<UserValidator>()
             .AddPasswordValidator<PasswordValidator>()
             .AddErrorDescriber<LocalizationIdentityErrorDescriber>()
             .AddEntityFrameworkStores<AppDbContext>();
-
     }
 }

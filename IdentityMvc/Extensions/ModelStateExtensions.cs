@@ -6,9 +6,6 @@ public static class ModelStateExtensions
 {
     public static void AddModelErrorList(this ModelStateDictionary modelState, List<string> errorMessages)
     {
-        errorMessages.ForEach(x =>
-        {
-            modelState.AddModelError(string.Empty,x);
-        });
+        errorMessages.ForEach(x => { modelState.AddModelError(string.Empty, x); });
     }
 }
