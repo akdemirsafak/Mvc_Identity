@@ -9,6 +9,7 @@ public class LoginViewModel
     [Required(ErrorMessage = "Email boş geçilemez.")]
     public string Email { get; set; }
 
+    [DataType(DataType.Password)]
     [DisplayName("Şifre : ")]
     [Required(ErrorMessage = "Parola boş bırakılamaz.")]
     public string Password { get; set; }

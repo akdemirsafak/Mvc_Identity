@@ -15,13 +15,16 @@ public class SignUpViewModel
 
     [DisplayName("Telefon Numarası : ")]
     [Required(ErrorMessage = "Telefon numarası boş geçilemez.")]
-    //[DataType(DataType.PhoneNumber)]
     public string PhoneNumber { get; set; }
 
+
+    [DataType(DataType.Password)]
     [DisplayName("Parola : ")]
     [Required(ErrorMessage = "Parola boş geçilemez.")]
     public string Password { get; set; }
 
+
+    [DataType(DataType.Password)]
     [DisplayName("Parola Tekrar : ")]
     [Required(ErrorMessage = "Parola boş bırakılamaz.")]
     [Compare(nameof(Password), ErrorMessage = "Girilen şifreler eşleşmiyor.")]

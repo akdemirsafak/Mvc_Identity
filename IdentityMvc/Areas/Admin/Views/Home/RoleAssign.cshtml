@@ -1,0 +1,23 @@
+﻿@model List<RoleAssignViewModel>
+
+@{
+    ViewBag.Title = "Kullanıcının Rolleri ve Rol Atama";
+    Layout = "_Layout";
+}
+
+<h3>@User.Identity.Name kullanıcısının Rollerini gör ve rol ata.</h3>
+<hr/>
+
+<form asp-action="RoleAssign" asp-area="Admin" method="post">
+    <!-- Burada for yerine foreach kullanırsak MVC bunun bir RoleAssignViewModel olduğunu algılayamıyor ve sonuca ulaşamıyoruz -->
+    @for (var i = 0; i < Model.Count; i++)
+    {
+        <div class="form-check">
+            <input asp-for="@Model[i].Exist" type="checkbox" class="form-check-input"/>
+            <label asp-for="@Model[i].RoleId" class="form-check-label">@Model[i].RoleName</label>
+            <input type="hidden" asp-for="@Model[i].RoleName"/>
+            <input type="hidden" asp-for="@Model[i].RoleId"/>
+        </div>
+    }
+    <button class="btn-success btn mt-2" type="submit"> Kaydet </button>
+</form>

@@ -32,4 +32,21 @@ public class MemberController : Controller
         return View();
     }
     //Diğer controller'larda sadece üyelerin erişmesini istediğimiz endpointlere [Authorize] attribute ü kullanmalıyız.
+
+    [Authorize(Roles = "Editor")]
+    public IActionResult Editor()
+    {
+        return View();
+    }
+
+    [Authorize(Roles = "Manager,Admin")]
+    public IActionResult Manager()
+    {
+        return View();
+    }
+
+    public IActionResult AccessDenied()
+    {
+        return View();
+    }
 }

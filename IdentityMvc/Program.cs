@@ -1,5 +1,7 @@
 using IdentityMvc.Extensions;
 using IdentityMvc.Models;
+using IdentityMvc.OptionModels;
+using IdentityMvc.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,13 +14,19 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services
+    .AddScoped<IEmailService, EmailService>(); //Soyutladık. Request response'a döndüğünde her seferinde belirlensin.
 builder.Services.AddIdentityWithExtention();
 builder.Services.ConfigureApplicationCookie(opt =>
 {
     var cookieBuilder = new CookieBuilder();
     cookieBuilder.Name = "IdentityServerLogin";
     opt.LoginPath = new PathString("/Home/Login");
-    opt.LogoutPath = new PathString("/Member/Logout"); //Efektif olarak isimlendiriğimiz Logout için yazdık. 
+    opt.LogoutPath = new PathString("/Member/Logout"); //Efektif olarak isimlendiriğimiz Logout için yazdık.
+    opt.AccessDeniedPath = new PathString("/Member/AccessDenied");
     opt.Cookie = cookieBuilder;
     opt.ExpireTimeSpan = TimeSpan.FromDays(60);
     opt.SlidingExpiration = true; //kullanıcı her giriş yaptığında cookie süresini 60 gün uzatır.

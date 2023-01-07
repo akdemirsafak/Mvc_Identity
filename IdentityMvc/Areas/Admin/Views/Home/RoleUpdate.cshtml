@@ -1,0 +1,24 @@
+﻿@model RoleUpdateViewModel
+
+@{
+    ViewBag.Title = "Rol güncelleme sayfası";
+    Layout = "_Layout";
+}
+
+
+<div class="row">
+    <div class="col-md-4 offset-4">
+        <h2>Rol güncelleniyor..</h2>
+
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+        <form method="post">
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control">
+                <span asp-validation-for="Name" class="form-text"></span>
+            </div>
+            <input asp-for="Id" type="hidden"/>
+            <button type="submit" class="btn btn-primary">Güncelle</button>
+        </form>
+    </div>
+</div>

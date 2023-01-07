@@ -1,6 +1,7 @@
 ﻿using IdentityMvc.CustomValidations;
 using IdentityMvc.Localizations;
 using IdentityMvc.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace IdentityMvc.Extensions;
 
@@ -8,6 +9,10 @@ public static class StartupExtensions
 {
     public static void AddIdentityWithExtention(this IServiceCollection serviceCollection)
     {
+        serviceCollection.Configure<DataProtectionTokenProviderOptions>(
+            options => { options.TokenLifespan = TimeSpan.FromHours(2); });
+
+        //Gmail üzerinden ücretsiz mail gönderebiliriz. Google=>Manage Google Account =>Security =>Add Password(Uygulama şifreleri) yeni şifre oluşturuyoruz. 
         serviceCollection.AddIdentity<AppUser, AppRole>(
                 options =>
                 {
@@ -25,9 +30,11 @@ public static class StartupExtensions
                     options.Lockout.DefaultLockoutTimeSpan =
                         TimeSpan.FromMinutes(3); //Default olarak 5 dakika kitleniyormuş.
                     options.Lockout.MaxFailedAccessAttempts = 3; //Default 5 yanlış girişi 3 e düşürdük.
-                }).AddUserValidator<UserValidator>()
+                })
+            .AddUserValidator<UserValidator>()
             .AddPasswordValidator<PasswordValidator>()
             .AddErrorDescriber<LocalizationIdentityErrorDescriber>()
-            .AddEntityFrameworkStores<AppDbContext>();
+            .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+        //.AddTokenProvider(); ile kendi token'larımızı oluşturabiliriz.
     }
 }

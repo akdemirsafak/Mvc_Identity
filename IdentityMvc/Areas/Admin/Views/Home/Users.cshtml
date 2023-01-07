@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Users";
+}
+@model List<UserViewModel>
+
+<div class="text-center">
+    <h1 class="display-4">Kullanıcılar</h1>
+</div>
+
+@if (TempData["SuccessMessage"] is not null)
+{
+    <div class="alert alert-info" role="alert"> @TempData["SuccessMessage"] </div>
+}
+
+
+<table class="table table-striped">
+    <thead>
+
+    <th> Id </th>
+    <th> UserName </th>
+    <th> Email </th>
+    <th> Roller </th>
+    <th> Rol ata </th>
+    </thead>
+    <tbody>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Id</td>
+            <td>@user.UserName</td>
+            <td>@user.Email</td>
+            <td user-roles="@user.Id"></td>
+            <td>
+                <a class="btn btn-outline-primary" asp-action="RoleAssign" asp-route-id="@user.Id"> Rol Ata </a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
